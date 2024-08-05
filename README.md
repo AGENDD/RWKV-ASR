@@ -29,7 +29,7 @@ Other parameters for training:
 
 The default setting will train a 3B rwkv model on librispeech 960h dataset, with 4 devices and a batch size of 4 per device (real batch size = 16). 
 
-The script will overwrite the .pth file in ```output/```. Make sure to save the needed .pth model files under this path before the training.
+The script will overwrite the .pth file in ```output/```. Make sure to save the needed .pth model files under this path to other dir before the training.
 
 run ```sh demo/demo-state-tuning.sh``` to start the script.
 
