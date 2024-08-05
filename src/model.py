@@ -1273,11 +1273,7 @@ class RWKV(pl.LightningModule):
                 inputs_embeds = torch.cat((inputs_embeds,next_input.unsqueeze(1)), dim = 1)
                 output_seq = self(idx,inputs_embeds)
 
-            return true_output
-            # init_input = output_seq[0][-1][:]
-            
-            # for i in range(MAX_LENGTH):
-                
+            return true_output               
             
 
         def training_step(self, batch, batch_idx):
