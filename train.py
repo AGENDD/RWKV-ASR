@@ -15,6 +15,8 @@ if __name__ == "__main__":
     rank_zero_info("########## work in progress ##########")
 
     parser = ArgumentParser()
+    
+    parser.add_argument("--op", default="1", type=int)# 1 for training, 2 for prediction, 3 for wer on libri test set
 
     parser.add_argument("--load_model", default="", type=str)  # full path, with .pth
     parser.add_argument("--wandb", default="", type=str)  # wandb project name. if "" then don't use wandb
@@ -479,11 +481,8 @@ if __name__ == "__main__":
     else:
         print("No files found. Create origin model.")
     
-    OP = 1
     from datasets import load_from_disk,load_dataset, concatenate_datasets
-    
-    
-    if(OP == 1):# training
+    if(args.op == 1):# training
         dataset = load_dataset('librispeech_asr','clean',split='train.100')
         dataset2 = load_dataset('librispeech_asr','clean',split='train.360')
         dataset3 = load_dataset('librispeech_asr','other',split='train.500')
@@ -495,7 +494,7 @@ if __name__ == "__main__":
         print("train starting...")
         trainer.fit(Total_model, data_loader)
         
-    elif(OP == 2):#prediction
+    elif(args.op == 2):#prediction
         
         dataset = load_dataset('librispeech_asr','clean',split='train.100')
         dataset = dataset.select(range(100))
@@ -512,7 +511,7 @@ if __name__ == "__main__":
             print(f"output:\n{output}")
             print(f"answer:\n{data['text'].lower()}")
             print("\n\n")
-    elif(OP == 3):#wer
+    elif(args.op == 3):#wer
         from datasets import load_dataset
         ds1 = load_dataset("librispeech_asr","clean",split="test")
         ds2 = load_dataset("librispeech_asr","other",split="test")
