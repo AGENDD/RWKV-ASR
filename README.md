@@ -1,4 +1,4 @@
-This repo is developed on [RWKV-PEFT](https://github.com/JL-er/RWKV-PEFT). It follows the framwork of SLAM_ASR and opens the state tuning for RWKV models. This realizes high-accuracy ASR based on RWKV language model.
+This repo is developed on [RWKV-PEFT](https://github.com/JL-er/RWKV-PEFT). It follows the framwork of SLAM_ASR and opens the state tuning for RWKV models. This realizes high-accuracy and instruction-free ASR based on RWKV language model.
 
 
 # Environment
