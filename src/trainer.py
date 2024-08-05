@@ -190,11 +190,8 @@ class train_callback(pl.Callback):
             self.loss_queue.enqueue(trainer.my_loss)
             self.log("lr", trainer.my_lr, prog_bar=True, on_step=True)
             # self.log("loss", trainer.my_epoch_loss, prog_bar=True, on_step=True)
-            self.log("loss", self.loss_queue.average(), prog_bar=True, on_step=True)
-            self.log("step", trainer.my_loss, prog_bar=True, on_step=True)
-            self.log("t_a",pl_module.T_audio - pl_module.T_init, prog_bar=True, on_step=True)
-            self.log("t_v",pl_module.T_vector - pl_module.T_audio, prog_bar=True, on_step=True)
-            self.log("t_r",pl_module.T_rwkv - pl_module.T_vector, prog_bar=True, on_step=True)
+            self.log("avg_loss", self.loss_queue.average(), prog_bar=True, on_step=True)
+            self.log("step_loss", trainer.my_loss, prog_bar=True, on_step=True)
             # self.log("s", real_step, prog_bar=True, on_step=True)
 
             if len(args.wandb) > 0:
