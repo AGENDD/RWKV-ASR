@@ -42,4 +42,4 @@ Follow the instruction in Traning, but modify ```OP=2``` in ```demo/demo-state-t
 
 # WER test
 
-Follow the instruction in Traning, but modify ```OP=3``` in ```demo/demo-state-tuning.sh```. The script will calculate the WER of the model in ```output/``` the clean test set and the other test set of Librispeech.
+Follow the instruction in Traning, but modify ```OP=3``` in ```demo/demo-state-tuning.sh```. The script will calculate the WER of the model in ```output/``` on the clean test set and the other test set of Librispeech.
