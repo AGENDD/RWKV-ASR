@@ -17,16 +17,16 @@ n_embd=2560
 # n_embd=4096
 
 micro_bsz=4
-epoch_save=1
 epoch_steps=18089
 ctx_len=1024
-
+device=4
+epoch_save=1
 #1 for training, 2 for prediction, 3 for wer on libri test set
 OP=1
 
 QUANT='nf4' 
 export HF_ENDPOINT=https://hf-mirror.com
-python train.py --load_model $load_model --devices 4 \
+python train.py --load_model $load_model --devices $device \
 --proj_dir $proj_dir --data_file $data_file \
 --data_type binidx --vocab_size 65536 \
 --ctx_len $ctx_len --epoch_steps $epoch_steps --epoch_count 1000 --epoch_begin 0 --epoch_save $epoch_save --micro_bsz $micro_bsz \
