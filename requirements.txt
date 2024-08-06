@@ -3,3 +3,8 @@ bitsandbytes
 deepspeed
 einops
 triton==2.2.0
+transformers[torch]
+datasets
+evaluate
+jiwer
+tqdm

@@ -16,7 +16,7 @@ if __name__ == "__main__":
 
     parser = ArgumentParser()
     
-    parser.add_argument("--op", default="1", type=int)# 1 for training, 2 for prediction, 3 for wer on libri test set
+    parser.add_argument("--op", default="train", type=str) # train or eval
 
     parser.add_argument("--load_model", default="", type=str)  # full path, with .pth
     parser.add_argument("--wandb", default="", type=str)  # wandb project name. if "" then don't use wandb
@@ -482,7 +482,7 @@ if __name__ == "__main__":
         print("No files found. Create origin model.")
     
     from datasets import load_from_disk,load_dataset, concatenate_datasets
-    if(args.op == 1):# training
+    if(args.op == "train"):# training
         dataset = load_dataset('librispeech_asr','clean',split='train.100')
         dataset2 = load_dataset('librispeech_asr','clean',split='train.360')
         dataset3 = load_dataset('librispeech_asr','other',split='train.500')
@@ -494,24 +494,24 @@ if __name__ == "__main__":
         print("train starting...")
         trainer.fit(Total_model, data_loader)
         
-    elif(args.op == 2):#prediction
+    # elif(args.op == "eval"):#prediction
         
-        dataset = load_dataset('librispeech_asr','clean',split='train.100')
-        dataset = dataset.select(range(100))
+    #     dataset = load_dataset('librispeech_asr','clean',split='train.100')
+    #     dataset = dataset.select(range(100))
         
-        tokenizer = Total_model.return_tokenizer()
-        Total_model.to("cuda", dtype=torch.bfloat16)
+    #     tokenizer = Total_model.return_tokenizer()
+    #     Total_model.to("cuda", dtype=torch.bfloat16)
         
-        for data in dataset:
-            import librosa
+    #     for data in dataset:
+    #         import librosa
             
-            output= Total_model.generate(data['audio']['array'])
-            output = ''.join(output)
+    #         output= Total_model.generate(data['audio']['array'])
+    #         output = ''.join(output)
             
-            print(f"output:\n{output}")
-            print(f"answer:\n{data['text'].lower()}")
-            print("\n\n")
-    elif(args.op == 3):#wer
+    #         print(f"output:\n{output}")
+    #         print(f"answer:\n{data['text'].lower()}")
+    #         print("\n\n")
+    elif(args.op == "eval"):#wer
         from datasets import load_dataset
         ds1 = load_dataset("librispeech_asr","clean",split="test")
         ds2 = load_dataset("librispeech_asr","other",split="test")
@@ -544,4 +544,4 @@ if __name__ == "__main__":
             
             average_wer = calculate_wer(predictions, references)
             # print(ds)
-            print(f"Average WER: {average_wer}") 
+            print(f"Average WER for {ds} is: {average_wer}") 
