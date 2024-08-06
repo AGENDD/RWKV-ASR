@@ -75,4 +75,8 @@ Follow the instruction in Training, but modify ```OP=eval``` in ```demo/demo-sta
 
 ### Pretrained weights
 
-The links for pretrained adapters are coming soon.
+Download the pretrained weights from the following link:
+
+https://huggingface.co/JerryAGENDD/RWKV-ASR/tree/main
+
+The pretrained weights contain the necessary parameters for the adapter and the RWKV initial state. These weights are trained using WavLM Large as the speech encoder and RWKV-3B as the language model (script default configuration). Place the weights in the ```output/``` directory for the script to load them.
