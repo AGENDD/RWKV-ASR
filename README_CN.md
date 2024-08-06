@@ -74,4 +74,8 @@ RWKV( [InitialState], [Adapter](SpeechEncoder(audio))) -> "The weather is good.
 
 ### 预训练权重
 
-下载链接即将更新。
+下载预训练权重，请访问以下链接：
+
+https://huggingface.co/JerryAGENDD/RWKV-ASR/tree/main
+
+预训练权重包含适配器和RWKV初始状态的必要参数。这些权重是使用WavLM Large作为语音编码器和RWKV-3B作为语言模型（脚本默认配置）进行训练的。请将权重放置在```output/```目录中，以便脚本加载它们。
