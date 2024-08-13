@@ -75,7 +75,7 @@ Follow the instruction in Training, but modify ```OP=eval``` in ```demo/demo-sta
 
 ### Audio File Prediction
 
-Open ```demo/demo-predict.sh``` and modify ```file_path=path/to/your/audio/file```. Run ```sh demo/demo-predict.sh``` to load a trained weights in ```output/``` and predict the content of the input audio file.
+Open ```demo/demo-predict.sh``` and modify ```file_path=path/to/your/audio/file```. Run ```sh demo/demo-predict.sh``` to load trained weights in ```output/``` and predict the content of the input audio file.
 
 ### Pretrained weights
 
