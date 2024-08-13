@@ -73,6 +73,10 @@ There are also some codes to enable other PEFT training of the whole model. Note
 
 Follow the instruction in Training, but modify ```OP=eval``` in ```demo/demo-state-tuning.sh```. The trained model in ```output/``` will be used to calculate the WER of the model in ```output/``` on the clean test set and the other test set of Librispeech.
 
+### Audio File Prediction
+
+Open ```demo/demo-predict.sh``` and modify ```file_path=path/to/your/audio/file```. Run ```sh demo/demo-predict.sh``` to load a trained weights in ```output/``` and predict the content of the input audio file.
+
 ### Pretrained weights
 
 Download the pretrained weights from the following link:

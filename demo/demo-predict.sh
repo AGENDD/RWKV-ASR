@@ -22,11 +22,12 @@ ctx_len=1024
 device=4
 epoch_save=1
 
-OP="train"
+file_path="path/to/your/audio/file"
+OP="predict"
 
 QUANT='nf4' 
 export HF_ENDPOINT=https://hf-mirror.com
-python train.py --load_model $load_model --devices $device \
+python train.py --load_model $load_model --devices $device --file_path $path_file\
 --proj_dir $proj_dir --data_file $data_file \
 --data_type binidx --vocab_size 65536 \
 --ctx_len $ctx_len --epoch_steps $epoch_steps --epoch_count 1000 --epoch_begin 0 --epoch_save $epoch_save --micro_bsz $micro_bsz \

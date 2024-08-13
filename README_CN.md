@@ -72,6 +72,11 @@ RWKV( [InitialState], [Adapter](SpeechEncoder(audio))) -> "The weather is good.
 
 参考训练的步骤，但设定`demo/demo-state-tuning.sh`里的`OP=eval`。保存在`output/`中的模型将被用于评估，脚本会计算Librispeech 960h Clean和Other测试集的WER。
 
+
+### 音频文件预测
+
+打开```demo/demo-predict.sh```并修改```file_path```为输入音频的路径。运行```sh demo/demo-predict.sh```来从```output/```加载训练权重并预测音频内容。
+
 ### 预训练权重
 
 下载预训练权重，请访问以下链接：

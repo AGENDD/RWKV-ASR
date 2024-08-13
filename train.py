@@ -113,6 +113,7 @@ if __name__ == "__main__":
 
     #loss_mask
     parser.add_argument("--loss_mask", action="store_true")
+    parser.add_argument("--file_path", default="none", type=str)
 
     if pl.__version__[0]=='2':
         parser.add_argument("--accelerator", default="gpu", type=str)
@@ -545,3 +546,22 @@ if __name__ == "__main__":
             average_wer = calculate_wer(predictions, references)
             # print(ds)
             print(f"Average WER for {ds} is: {average_wer}") 
+    elif(args.op == 'predict'):
+        
+        import librosa
+        import time
+        
+        audio, sr = librosa.load(args.file_path, sr=None)
+        audio = librosa.resample(audio, orig_sr=sr, target_sr=16000)
+        
+        Total_model = Total_model.to("cuda", dtype=torch.bfloat16)
+        
+        start_time = time.time()
+        output= Total_model.generate(audio)
+        output = ''.join(output)
+        end_time = time.time()
+        
+        print(f"audio: {args.file_path}")
+        print(f"predict: {output}")
+        print(f"Response time: {end_time - start_time} seconds")
+        
