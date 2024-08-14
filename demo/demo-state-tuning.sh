@@ -6,7 +6,6 @@ load_model='RWKV-x060-World-3B-v2.1-20240417-ctx4096.pth'
 
 #model output dir
 proj_dir='output'
-data_file='temp_datasets'
 
 # 3B
 n_layer=32
@@ -27,7 +26,7 @@ OP="train"
 QUANT='nf4' 
 export HF_ENDPOINT=https://hf-mirror.com
 python train.py --load_model $load_model --devices $device \
---proj_dir $proj_dir --data_file $data_file \
+--proj_dir $proj_dir \
 --data_type binidx --vocab_size 65536 \
 --ctx_len $ctx_len --epoch_steps $epoch_steps --epoch_count 1000 --epoch_begin 0 --epoch_save $epoch_save --micro_bsz $micro_bsz \
 --n_layer $n_layer --n_embd $n_embd \
