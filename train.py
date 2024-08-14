@@ -165,8 +165,6 @@ if __name__ == "__main__":
     os.environ["RWKV_TRAIN_TYPE"]=''
     if args.train_type=='state':
         os.environ["RWKV_TRAIN_TYPE"]='states'
-    elif args.train_type=='infctx':
-        os.environ["RWKV_TRAIN_TYPE"]='infctx'
 
     os.environ["WKV"]='fla' if args.fla else ''
     if args.dim_att <= 0:
@@ -299,14 +297,7 @@ if __name__ == "__main__":
     # args.vocab_size = train_data.vocab_size
     from src.rwkvLinear import LORA_CONFIG, LoraLinear
     from src.model import RWKV
-    if args.lora:
-        assert args.lora_r > 0, "LoRA should have its `r` > 0"
-        LORA_CONFIG["r"] = args.lora_r
-        LORA_CONFIG["alpha"] = args.lora_alpha
-        LORA_CONFIG["dropout"] = args.lora_dropout
-        LORA_CONFIG["parts"] = set(str(args.lora_parts).split(','))
-        enable_time_finetune = 'time' in LORA_CONFIG["parts"]
-        enable_ln_finetune = 'ln' in LORA_CONFIG["parts"]
+    
     if args.quant!='none':
         LORA_CONFIG["quant"]=True
     model = RWKV(args)
@@ -321,59 +312,6 @@ if __name__ == "__main__":
                 if 'state' in pname :
                     param.requires_grad = True
             break
-    elif args.LISA:
-        import re
-        select_layers = np.random.choice(range(args.n_layer), args.lisa_r, replace=False)
-        for name, module in model.named_modules():
-            for pname, param in module.named_parameters():
-                if 'emb' in pname or 'head' in pname or '.ln' in pname or 'time' in pname :
-                    param.requires_grad = True
-                match = re.search(r'\d+', pname)
-                if match:
-                    number = int(match.group())
-                    if number in select_layers:
-                        param.requires_grad  = True
-            break
-    elif args.lora:
-        for name, module in model.named_modules():
-            if len(args.load_model) == 0:
-                if any(n.startswith("emb.") for n, _ in module.named_parameters()):
-                    for pname, param in module.named_parameters():
-                        if 'emb.weight'==pname:
-                            print(f'  EMB additionally training module {pname}')
-                            param.requires_grad = True
-                if any(n.startswith("head.") for n, _ in module.named_parameters()):
-                    for pname, param in module.named_parameters():
-                        if 'head.weight'==pname:
-                            print(f'  head additionally training module {pname}')
-                            param.requires_grad = True
-                if 'ln' in name:
-                    print(f'  LoRA additionally training module {name}')
-                    for param in module.parameters():
-                        param.requires_grad = True
-            if any(n.startswith("emb.") for n, _ in module.named_parameters()):
-                for pname, param in module.named_parameters():
-                    if args.emb and 'emb.weight'==pname:
-                        print(f'  EMB additionally training module {pname}')
-                        param.requires_grad = True
-            if any(n.startswith("head.") for n, _ in module.named_parameters()):
-                for pname, param in module.named_parameters():
-                    if args.emb and 'head.weight'==pname:
-                        print(f'  head additionally training module {pname}')
-                        param.requires_grad = True
-            if any(n.startswith("lora_") for n, _ in module.named_parameters()):
-                print(f'  LoRA additionally training module {name}')
-                for pname, param in module.named_parameters():
-                    param.requires_grad = 'lora_' in pname
-            elif enable_ln_finetune and '.ln' in name:
-                print(f'  LoRA additionally training module {name}')
-                for param in module.parameters():
-                    param.requires_grad = True
-            elif enable_time_finetune and any(n.startswith("time") for n, _ in module.named_parameters()):
-                for pname, param in module.named_parameters():
-                    if pname.startswith("time"):
-                        print(f'  LoRA additionally training parameter {pname}')
-                        param.requires_grad = True
 
     if len(args.load_model) == 0 or args.my_pile_stage == 1:  # shall we build the initial weights?
         init_weight_name = f"{args.proj_dir}/rwkv-init.pth"
@@ -381,60 +319,10 @@ if __name__ == "__main__":
         args.load_model = init_weight_name
 
     rank_zero_info(f"########## Loading {args.load_model}... ##########")
-    # try:
-    #     load_dict = torch.load(args.load_model, map_location="cpu")
-    #     load_keys = list(load_dict.keys())
-    #     for k in load_keys:
-    #         if k.startswith('_forward_module.'):
-    #             assert 1==2
-    #             load_dict[k.replace('_forward_module.','')] = load_dict[k]
-    #             del load_dict[k]
-    # except:
-    #     rank_zero_info(f"Bad checkpoint {args.load_model}")
-    #     if args.my_pile_stage >= 2:  # try again using another checkpoint
-    #         max_p = args.my_pile_prev_p
-    #         if max_p == -1:
-    #             args.load_model = f"{args.proj_dir}/rwkv-init.pth"
-    #         else:
-    #             args.load_model = f"{args.proj_dir}/rwkv-{max_p}.pth"
-    #         args.epoch_begin = max_p + 1
-    #         rank_zero_info(f"Trying {args.load_model}")
-    #         load_dict = torch.load(args.load_model, map_location="cpu")
 
-    # if args.load_partial == 1:
-    #     load_keys = load_dict.keys()
-    #     for k in model.state_dict():
-    #         if k not in load_keys:
-    #             load_dict[k] = model.state_dict()[k]
     model.load_state_dict(torch.load(args.load_model, map_location="cpu"), strict=(not freeze))
 
-    if args.PISSA and args.pissa_init=="":
-        init_dict = {}
-        rank_zero_info(f"########## Init PISSA... ##########")
-        for name, m in model.named_modules():
-            if hasattr(m, "pissa_init") and callable(getattr(m, "pissa_init")):
-                m.pissa_init(args.svd_niter)
-                init_dict[f'{name}.init_lora_A'] = m.lora_A.data
-                init_dict[f'{name}.init_lora_B'] = m.lora_B.data
-        torch.save(init_dict, f'{args.proj_dir}/init_pissa.pth')
-    if os.path.isfile(args.lora_load):
-        model.load_state_dict(torch.load(args.lora_load, map_location="cpu"),
-                              strict=False)
-        
-    if os.path.isfile(args.pissa_load):
-        model.load_state_dict(torch.load(args.pissa_load, map_location="cpu"),
-                            strict=False)
-        pissa_init = torch.load(args.pissa_init, map_location="cpu")
-        rank_zero_info(f"########## Load PISSA... ##########")
-        for name, m in model.named_modules():
-            if hasattr(m, "pissa_load") and callable(getattr(m, "pissa_load")):
-                m.pissa_load(pissa_init[f'{name}.init_lora_A'], pissa_init[f'{name}.init_lora_B'])
     
-    if args.quant!='none':
-        rank_zero_info(f"########## Quant... ##########")
-        for name, m in model.named_modules():
-            if hasattr(m, "quant") and callable(getattr(m, "quant")):
-                    m.quant(args.quant)
 
 
     if pl.__version__[0]=='2':
@@ -479,10 +367,13 @@ if __name__ == "__main__":
         Total_model.load_state_dict(torch.load(file_path), strict=False)
         print(f"Loaded model from {file_path}")
     else:
-        print("No files found. Create origin model.")
+        print("No weights found. Create origin model.")
+    
     
     from datasets import load_from_disk,load_dataset, concatenate_datasets
     if(args.op == "train"):# training
+        
+        
         dataset = load_dataset('librispeech_asr','clean',split='train.100')
         dataset2 = load_dataset('librispeech_asr','clean',split='train.360')
         dataset3 = load_dataset('librispeech_asr','other',split='train.500')
@@ -552,7 +443,6 @@ if __name__ == "__main__":
         
         audio, sr = librosa.load(args.file_path, sr=None)
         audio = librosa.resample(audio, orig_sr=sr, target_sr=16000)
-        
         Total_model = Total_model.to("cuda", dtype=torch.bfloat16)
         
         start_time = time.time()
