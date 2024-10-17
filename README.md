@@ -1,4 +1,4 @@
-## Speech recognition with frozen RWKV language models
+## Speech missions with frozen RWKV language models
 
 - [中文说明](README_CN.md)
 - [English](README.md)
@@ -15,7 +15,7 @@ We want to explore compute-efficient and high-performance ways to extend text-ba
 - [x] ASR in many languages (coming soon)
 - [x] Speech Translation
 - [x] Voice input question answering (like GPT-4o)
-- [ ] Other audio mission
+- [ ] Other audio missions
 - [ ] Multiple rounds answering
 
 ### Environment
