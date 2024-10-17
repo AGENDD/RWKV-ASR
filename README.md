@@ -12,7 +12,7 @@ This code inside is developed on [RWKV-PEFT](https://github.com/JL-er/RWKV-PEFT)
 We want to explore compute-efficient and high-performance ways to extend text-based RWKV into  multimodal ones. In the audio and speech modality, these are the tasks we are attempting:
 
 - [x] ASR in single language
-- [x] ASR in many languages (coming soon)
+- [x] ASR in many languages
 - [x] Speech Translation
 - [x] Voice input question answering (like GPT-4o)
 - [ ] Other audio missions
@@ -93,4 +93,4 @@ The pretrained weights contain the necessary parameters for the adapter and the 
 
 ### Speech Chat with RWKV
 
-To be continue
+A script for real-time speech conversation with rwkv. To be continue
