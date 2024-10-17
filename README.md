@@ -12,10 +12,11 @@ This code inside is developed on [RWKV-PEFT](https://github.com/JL-er/RWKV-PEFT)
 We want to explore compute-efficient and high-performance ways to extend text-based RWKV into  multimodal ones. In the audio and speech modality, these are the tasks we are attempting:
 
 - [x] ASR in single language
-- [ ] ASR in many languages (coming soon)
-- [ ] Speech Translation
-- [ ] Voice input question answering (like GPT-4o)
-
+- [x] ASR in many languages (coming soon)
+- [x] Speech Translation
+- [x] Voice input question answering (like GPT-4o)
+- [ ] Other audio mission
+- [ ] Multiple rounds answering
 
 ### Environment
 
@@ -81,6 +82,15 @@ Open ```demo/demo-predict.sh``` and modify ```file_path=path/to/your/audio/file`
 
 Download the pretrained weights from the following link:
 
+ASR:
 https://huggingface.co/JerryAGENDD/RWKV-ASR/tree/main/ASR
 
+SpeechTranslate:https://huggingface.co/JerryAGENDD/RWKV-ASR/tree/main/ST
+
+SpeechQA: https://huggingface.co/JerryAGENDD/RWKV-ASR/tree/main/SpeechQA
+
 The pretrained weights contain the necessary parameters for the adapter and the RWKV initial state. These weights are trained using WavLM Large as the speech encoder and RWKV-3B as the language model (script default configuration). Place the weights in the ```output/``` directory for the script to load them.
+
+### Speech Chat with RWKV
+
+To be continue
