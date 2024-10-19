@@ -82,12 +82,11 @@ Open ```demo/demo-predict.sh``` and modify ```file_path=path/to/your/audio/file`
 
 Download the pretrained weights from the following link:
 
-ASR:
-https://huggingface.co/JerryAGENDD/RWKV-ASR/tree/main/ASR
+ASR:https://huggingface.co/JerryAGENDD/RWKV-ASR/tree/main/ASR
 
 SpeechTranslate:https://huggingface.co/JerryAGENDD/RWKV-ASR/tree/main/ST
 
-SpeechQA: https://huggingface.co/JerryAGENDD/RWKV-ASR/tree/main/SpeechQA
+SpeechQA:https://huggingface.co/JerryAGENDD/RWKV-ASR/tree/main/SpeechQA
 
 The pretrained weights contain the necessary parameters for the adapter and the RWKV initial state. These weights are trained using WavLM Large as the speech encoder and RWKV-3B as the language model (script default configuration). Place the weights in the ```output/``` directory for the script to load them.
 
