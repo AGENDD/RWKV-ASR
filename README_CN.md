@@ -12,9 +12,11 @@
 我们希望探索计算效率高、性能优越的方式将基于文本的 RWKV 扩展到多模态模型。在音频和语音领域，我们正在尝试以下任务：
 
 - [x] 单语言 ASR
-- [ ] 多语言 ASR（即将推出）
-- [ ] 语音翻译
-- [ ] 语音输入问答（如 GPT-4o）
+- [x] 多语言 ASR
+- [x] 语音翻译
+- [x] 语音输入问答（如 GPT-4o）
+- [ ] 其他音频任务
+- [ ] 多轮对话
 
 ### 环境
 
@@ -81,6 +83,14 @@ RWKV( [InitialState], [Adapter](SpeechEncoder(audio))) -> "The weather is good.
 
 下载预训练权重，请访问以下链接：
 
-https://huggingface.co/JerryAGENDD/RWKV-ASR/tree/main/ASR
+语音识别:https://huggingface.co/JerryAGENDD/RWKV-ASR/tree/main/ASR
+
+语音翻译:https://huggingface.co/JerryAGENDD/RWKV-ASR/tree/main/ST
+
+语音问答:https://huggingface.co/JerryAGENDD/RWKV-ASR/tree/main/SpeechQA
 
 预训练权重包含适配器和RWKV初始状态的必要参数。这些权重是使用WavLM Large作为语音编码器和RWKV-3B作为语言模型（脚本默认配置）进行训练的。请将权重放置在```output/```目录中，以便脚本加载它们。
+
+### RWKV 语音对话
+
+正在开发一个与RWKV实时对话的脚本，敬请期待

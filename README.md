@@ -16,7 +16,7 @@ We want to explore compute-efficient and high-performance ways to extend text-ba
 - [x] Speech Translation
 - [x] Voice input question answering (like GPT-4o)
 - [ ] Other audio missions
-- [ ] Multiple rounds answering
+- [ ] Multiple turns answering
 
 ### Environment
 
