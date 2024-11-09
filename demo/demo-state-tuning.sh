@@ -24,7 +24,7 @@ epoch_save=1
 OP="train"
 
 QUANT='nf4' 
-export HF_ENDPOINT=https://hf-mirror.com
+
 python train.py --load_model $load_model --devices $device \
 --proj_dir $proj_dir \
 --data_type binidx --vocab_size 65536 \
