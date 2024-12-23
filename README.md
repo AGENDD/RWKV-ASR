@@ -92,4 +92,8 @@ The pretrained weights contain the necessary parameters for the adapter and the 
 
 ### Speech Chat with RWKV
 
-A script for real-time speech conversation with rwkv. To be continue
+A script for real-time speech conversation with RWKV:
+
+https://github.com/AGENDD/RWKV-SpeechChat
+
+You can use the trained weights to interact with RWKV in real time.

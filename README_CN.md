@@ -93,4 +93,8 @@ RWKV( [InitialState], [Adapter](SpeechEncoder(audio))) -> "The weather is good.
 
 ### RWKV 语音对话
 
-正在开发一个与RWKV实时对话的脚本，敬请期待
+这是一个与 RWKV 进行实时语音对话的脚本：
+
+https://github.com/AGENDD/RWKV-SpeechChat
+
+您可以使用训练后的权重与 RWKV 进行实时语音交互。
